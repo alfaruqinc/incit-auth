@@ -6,6 +6,7 @@ import { AuthModule } from './auth/auth.module';
 import dbConfig from './config/db.config';
 import { DbModule } from './db/db.module';
 import { UsersModule } from './users/users.module';
+import { DashboardsModule } from './dashboards/dashboards.module';
 import authConfig from './config/auth.config';
 
 @Module({
@@ -17,6 +18,7 @@ import authConfig from './config/auth.config';
     DbModule,
     UsersModule,
     AuthModule,
+    DashboardsModule,
   ],
   controllers: [AppController],
   providers: [AppService],
