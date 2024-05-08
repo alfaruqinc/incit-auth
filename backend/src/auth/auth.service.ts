@@ -11,7 +11,7 @@ export class AuthService {
     private readonly jwtService: JwtService,
   ) {}
 
-  async signUp(body: CreateUserDto) {
+  async register(body: CreateUserDto) {
     const saltOrRounds = 10;
     const hashedPassword = await bcrypt.hash(body.password, saltOrRounds);
     const newUser = {
