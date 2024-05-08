@@ -1,5 +1,5 @@
 import { Inject, Injectable } from '@nestjs/common';
-import { eq } from 'drizzle-orm';
+import { eq, sql } from 'drizzle-orm';
 import { DRIZZLE_PROVIDER, DrizzlePostgres } from 'src/db/drizzle.provider';
 import { CreateUserDto } from './dto/create-user.dto';
 import { CreateUserResponse, UserWithPassword, users } from './users.schema';
@@ -29,5 +29,12 @@ export class UsersService {
       .where(eq(users.email, email));
 
     return user;
+  }
+
+  async incrementLoginCountByOne(email: string): Promise<void> {
+    await this.db
+      .update(users)
+      .set({ loginCount: sql`${users.loginCount} + 1` })
+      .where(eq(users.email, email));
   }
 }

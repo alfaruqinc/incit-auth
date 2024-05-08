@@ -44,6 +44,8 @@ export class AuthService {
       throw new UnauthorizedException('email or password is wrong, bro');
     }
 
+    await this.usersService.incrementLoginCountByOne(user.email);
+
     const payload = {
       sub: user.id,
       email: user.email,
