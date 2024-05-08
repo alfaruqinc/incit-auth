@@ -1,7 +1,8 @@
 import { Inject, Injectable } from '@nestjs/common';
+import { eq } from 'drizzle-orm';
 import { DRIZZLE_PROVIDER, DrizzlePostgres } from 'src/db/drizzle.provider';
 import { CreateUserDto } from './dto/create-user.dto';
-import { CreateUserResponse, users } from './users.schema';
+import { CreateUserResponse, UserWithPassword, users } from './users.schema';
 
 @Injectable()
 export class UsersService {
@@ -17,6 +18,15 @@ export class UsersService {
       name: users.name,
       createdAt: users.createdAt,
     });
+
+    return user;
+  }
+
+  async getUserByEmailWithPassword(email: string): Promise<UserWithPassword> {
+    const [user] = await this.db
+      .select()
+      .from(users)
+      .where(eq(users.email, email));
 
     return user;
   }
