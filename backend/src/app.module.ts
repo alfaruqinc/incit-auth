@@ -6,12 +6,13 @@ import { AuthModule } from './auth/auth.module';
 import dbConfig from './config/db.config';
 import { DbModule } from './db/db.module';
 import { UsersModule } from './users/users.module';
+import authConfig from './config/auth.config';
 
 @Module({
   imports: [
     ConfigModule.forRoot({
       isGlobal: true,
-      load: [dbConfig],
+      load: [dbConfig, authConfig],
     }),
     DbModule,
     UsersModule,
