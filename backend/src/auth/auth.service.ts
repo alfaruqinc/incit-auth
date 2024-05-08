@@ -1,7 +1,9 @@
 import { Inject, Injectable, UnauthorizedException } from '@nestjs/common';
+import { ConfigType } from '@nestjs/config';
 import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcrypt';
 import { eq } from 'drizzle-orm';
+import authConfig from 'src/config/auth.config';
 import { DRIZZLE_PROVIDER, DrizzlePostgres } from 'src/db/drizzle.provider';
 import { CreateUserDto } from 'src/users/dto/create-user.dto';
 import { users } from 'src/users/users.schema';
@@ -15,6 +17,8 @@ export class AuthService {
     private readonly jwtService: JwtService,
     @Inject(DRIZZLE_PROVIDER)
     private readonly db: DrizzlePostgres,
+    @Inject(authConfig.KEY)
+    private authCfg: ConfigType<typeof authConfig>,
   ) {}
 
   async register(body: CreateUserDto) {
@@ -59,8 +63,13 @@ export class AuthService {
 
     const accessToken = await this.jwtService.signAsync(payload);
 
-    return { accessToken };
+    return this.getCookieWithJwt(accessToken);
   }
+
+  getCookieWithJwt(token: string) {
+    return `Authentication=${token}; HttpOnly; Path=/; Max-Age=${this.authCfg.JWT_EXPIRES}`;
+  }
+
   async logout(email: string): Promise<void> {
     const logoutAt = new Date();
 
