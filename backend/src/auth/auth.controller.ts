@@ -1,9 +1,9 @@
 import { Body, Controller, Post, Req } from '@nestjs/common';
-import { Request } from 'express';
 import { CreateUserDto } from 'src/users/dto/create-user.dto';
 import { AuthService } from './auth.service';
 import { LoginDto } from './dto/login.dto';
 import { Public } from './public.decorator';
+import { RequestWithUser } from './request-with-user.interface';
 
 @Controller('auth')
 export class AuthController {
@@ -22,8 +22,8 @@ export class AuthController {
   }
 
   @Post('logout')
-  async logout(@Req() request: Request) {
-    const user = request.user as { id: string; email: string; name: string };
+  async logout(@Req() request: RequestWithUser) {
+    const user = request.user;
 
     await this.authService.logout(user.email);
 
