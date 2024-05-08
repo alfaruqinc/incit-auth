@@ -1,7 +1,10 @@
-import { Injectable, UnauthorizedException } from '@nestjs/common';
+import { Inject, Injectable, UnauthorizedException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcrypt';
+import { eq } from 'drizzle-orm';
+import { DRIZZLE_PROVIDER, DrizzlePostgres } from 'src/db/drizzle.provider';
 import { CreateUserDto } from 'src/users/dto/create-user.dto';
+import { users } from 'src/users/users.schema';
 import { UsersService } from 'src/users/users.service';
 import { LoginDto } from './dto/login.dto';
 
@@ -10,6 +13,8 @@ export class AuthService {
   constructor(
     private readonly usersService: UsersService,
     private readonly jwtService: JwtService,
+    @Inject(DRIZZLE_PROVIDER)
+    private readonly db: DrizzlePostgres,
   ) {}
 
   async register(body: CreateUserDto) {
@@ -55,5 +60,13 @@ export class AuthService {
     const accessToken = await this.jwtService.signAsync(payload);
 
     return { accessToken };
+  }
+  async logout(email: string): Promise<void> {
+    const logoutAt = new Date();
+
+    await this.db
+      .update(users)
+      .set({ logoutAt: logoutAt })
+      .where(eq(users.email, email));
   }
 }
