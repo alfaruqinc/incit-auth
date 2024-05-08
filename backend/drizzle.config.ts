@@ -6,6 +6,6 @@ export default {
   out: './src/db/migrations',
   driver: 'pg', // 'pg' | 'mysql2' | 'better-sqlite' | 'libsql' | 'turso'
   dbCredentials: {
-    connectionString: process.env.POSTGRES_URL!,
+    connectionString: process.env.DB_URL!,
   },
 } satisfies Config;
