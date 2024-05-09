@@ -32,11 +32,12 @@ export class AuthController {
   }
 
   @Post('logout')
-  async logout(@Req() request: RequestWithUser) {
+  async logout(@Req() request: RequestWithUser, @Res() response: Response) {
     const user = request.user;
 
-    await this.authService.logout(user.email);
+    const cookie = await this.authService.logout(user.email);
+    response.setHeader('Set-Cookie', cookie);
 
-    return { message: 'logout success' };
+    return response.send({ message: 'logout success' });
   }
 }

@@ -70,12 +70,18 @@ export class AuthService {
     return `Authentication=${token}; HttpOnly; Path=/; Max-Age=${this.authCfg.JWT_EXPIRES}`;
   }
 
-  async logout(email: string): Promise<void> {
+  getCookieForLogout() {
+    return `Authentication=; HttpOnly; Path=/; Max-Age=0`;
+  }
+
+  async logout(email: string) {
     const logoutAt = new Date();
 
     await this.db
       .update(users)
       .set({ logoutAt: logoutAt })
       .where(eq(users.email, email));
+
+    return this.getCookieForLogout();
   }
 }
