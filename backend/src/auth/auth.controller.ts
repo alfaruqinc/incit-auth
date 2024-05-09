@@ -18,17 +18,11 @@ export class AuthController {
 
   @Public()
   @Post('login')
-  async login(
-    @Body() loginDto: LoginDto,
-    @Req() request: RequestWithUser,
-    @Res() response: Response,
-  ) {
+  async login(@Body() loginDto: LoginDto, @Res() response: Response) {
     const cookie = await this.authService.login(loginDto);
     response.setHeader('Set-Cookie', cookie);
-    const { user } = request;
 
-    console.log(request.user);
-    return response.send(user);
+    return response.send({ message: 'login success' });
   }
 
   @Post('logout')
