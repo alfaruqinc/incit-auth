@@ -1,12 +1,28 @@
 import { FormEvent, useState } from "react";
+import { register } from "../../services/authService";
+import { useMutation } from "@tanstack/react-query";
 
 export const Register = () => {
   const [email, setEmail] = useState("");
   const [name, setName] = useState("");
   const [password, setPassword] = useState("");
 
+  const mutation = useMutation({
+    mutationFn: register,
+    onSuccess: () => {
+      setEmail("");
+      setPassword("");
+      alert("success create account");
+    },
+    onError: (error) => {
+      alert(error.message);
+    },
+  });
+
   const handleRegister = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+
+    mutation.mutate({ email, name, password });
   };
 
   const registerForm = () => {
