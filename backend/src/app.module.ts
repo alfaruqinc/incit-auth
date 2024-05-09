@@ -8,12 +8,13 @@ import { DbModule } from './db/db.module';
 import { UsersModule } from './users/users.module';
 import { DashboardsModule } from './dashboards/dashboards.module';
 import authConfig from './config/auth.config';
+import baseConfig from './config/base.config';
 
 @Module({
   imports: [
     ConfigModule.forRoot({
       isGlobal: true,
-      load: [dbConfig, authConfig],
+      load: [dbConfig, authConfig, baseConfig],
     }),
     DbModule,
     UsersModule,
