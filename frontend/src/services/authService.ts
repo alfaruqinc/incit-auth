@@ -1,6 +1,7 @@
 import type {
   LoginForm,
   LoginResponse,
+  LogoutResponse,
   RegisterForm,
   RegisterResponse,
 } from "../types/auth";
@@ -14,6 +15,7 @@ export const register = async (
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(register),
+    credentials: "include",
   });
 
   if (!res.ok) {
@@ -30,6 +32,21 @@ export const login = async (login: LoginForm): Promise<LoginResponse> => {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(login),
+    credentials: "include",
+  });
+
+  if (!res.ok) {
+    const error = (await res.json()) as { error: string };
+    throw new Error(error.error);
+  }
+
+  return res.json();
+};
+
+export const logout = async (): Promise<LogoutResponse> => {
+  const res = await fetch(`${BASE_URL}/logout`, {
+    method: "POST",
+    credentials: "include",
   });
 
   if (!res.ok) {
