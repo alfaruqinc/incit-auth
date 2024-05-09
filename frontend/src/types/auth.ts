@@ -1,3 +1,7 @@
+export interface CheckAuth {
+  isAuthenticated: boolean;
+}
+
 export interface RegisterForm {
   email: string;
   name: string;

@@ -1,18 +1,18 @@
+import { useMutation, useQuery } from "@tanstack/react-query";
 import { useState } from "react";
 import { Login } from "./components/Auth/Login";
 import { Register } from "./components/Auth/Register";
-import { useMutation } from "@tanstack/react-query";
-import { logout } from "./services/authService";
+import { checkAuth, logout } from "./services/authService";
 
 function App() {
   const [show, setShow] = useState("");
 
+  const { data } = useQuery({ queryKey: ["auth"], queryFn: checkAuth });
+
   const mutation = useMutation({
     mutationFn: logout,
-    onSuccess: (data) => {
-      console.log(data);
+    onSuccess: () => {
       alert("success logout");
-
       window.location.reload();
     },
     onError: (error) => {
@@ -21,18 +21,27 @@ function App() {
   });
 
   const authBtn = () => {
+    if (data?.isAuthenticated) {
+      return <button onClick={() => mutation.mutate()}>logout</button>;
+    }
+
     return (
       <div>
         <button onClick={() => setShow("login")}>login</button>
         <button onClick={() => setShow("register")}>register</button>
-        <button onClick={() => mutation.mutate()}>logout</button>
       </div>
     );
   };
 
+  const header = () => {
+    if (data?.isAuthenticated) return <h1>Dashboard</h1>;
+
+    return <h1>INCIT Auth</h1>;
+  };
+
   return (
     <>
-      <h1>Auth</h1>
+      {header()}
       {authBtn()}
       {show === "login" && <Login />}
       {show === "register" && <Register />}

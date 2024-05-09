@@ -1,4 +1,5 @@
 import type {
+  CheckAuth,
   LoginForm,
   LoginResponse,
   LogoutResponse,
@@ -7,6 +8,25 @@ import type {
 } from "../types/auth";
 
 const BASE_URL = "http://localhost:3000/auth";
+
+export const checkAuth = async (): Promise<CheckAuth> => {
+  const res = await fetch(BASE_URL, {
+    method: "GET",
+    credentials: "include",
+  });
+
+  if (!res.ok) {
+    if (res.status === 401) {
+      return {
+        isAuthenticated: false,
+      };
+    }
+
+    throw new Error("something went wrong");
+  }
+
+  return await res.json();
+};
 
 export const register = async (
   register: RegisterForm,

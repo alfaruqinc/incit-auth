@@ -13,6 +13,7 @@ export const Register = () => {
       setEmail("");
       setPassword("");
       alert("success create account");
+      window.location.reload();
     },
     onError: (error) => {
       alert(error.message);
