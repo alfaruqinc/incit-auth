@@ -12,8 +12,14 @@ export class AuthController {
 
   @Public()
   @Post('register')
-  async register(@Body() registerDto: CreateUserDto) {
-    return await this.authService.register(registerDto);
+  async register(
+    @Body() registerDto: CreateUserDto,
+    @Res() response: Response,
+  ) {
+    const cookie = await this.authService.register(registerDto);
+    response.setHeader('Set-Cookie', cookie);
+
+    return response.send({ message: 'register success' });
   }
 
   @Public()
