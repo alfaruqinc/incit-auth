@@ -39,7 +39,7 @@ export class AuthService {
 
     const accessToken = await this.jwtService.signAsync(payload);
 
-    return this.getCookieWithJwt(accessToken);
+    return { cookie: this.getCookieWithJwt(accessToken), token: accessToken };
   }
 
   async login(body: LoginDto) {
@@ -63,7 +63,7 @@ export class AuthService {
 
     const accessToken = await this.jwtService.signAsync(payload);
 
-    return this.getCookieWithJwt(accessToken);
+    return { cookie: this.getCookieWithJwt(accessToken), token: accessToken };
   }
 
   getCookieWithJwt(token: string) {

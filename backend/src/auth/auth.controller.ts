@@ -16,19 +16,19 @@ export class AuthController {
     @Body() registerDto: CreateUserDto,
     @Res() response: Response,
   ) {
-    const cookie = await this.authService.register(registerDto);
+    const { cookie, token } = await this.authService.register(registerDto);
     response.setHeader('Set-Cookie', cookie);
 
-    return response.send({ message: 'register success' });
+    return response.send({ message: 'register success', token: token });
   }
 
   @Public()
   @Post('login')
   async login(@Body() loginDto: LoginDto, @Res() response: Response) {
-    const cookie = await this.authService.login(loginDto);
+    const { cookie, token } = await this.authService.login(loginDto);
     response.setHeader('Set-Cookie', cookie);
 
-    return response.send({ message: 'login success' });
+    return response.send({ message: 'login success', token: token });
   }
 
   @Post('logout')
