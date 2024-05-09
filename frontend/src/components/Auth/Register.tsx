@@ -2,6 +2,7 @@ import { FormEvent, useState } from "react";
 
 export const Register = () => {
   const [email, setEmail] = useState("");
+  const [name, setName] = useState("");
   const [password, setPassword] = useState("");
 
   const handleRegister = (e: FormEvent<HTMLFormElement>) => {
@@ -20,6 +21,16 @@ export const Register = () => {
               value={email}
               placeholder="email"
               onChange={(e) => setEmail(e.target.value)}
+            />
+          </label>
+          <br />
+          <label>
+            <span>name</span>
+            <input
+              type="text"
+              value={name}
+              placeholder="name"
+              onChange={(e) => setName(e.target.value)}
             />
           </label>
           <br />
