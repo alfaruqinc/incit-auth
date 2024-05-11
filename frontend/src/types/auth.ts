@@ -1,5 +1,12 @@
 export interface CheckAuth {
   isAuthenticated: boolean;
+  user: LoginUser;
+}
+
+interface LoginUser {
+  id: string;
+  name: string;
+  email: string;
 }
 
 export interface RegisterForm {
