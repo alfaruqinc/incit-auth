@@ -1,6 +1,6 @@
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { useState } from "react";
-import { Login } from "./components/Auth/Login";
+import { Link } from "react-router-dom";
 import { Register } from "./components/Auth/Register";
 import { checkAuth, logout } from "./services/authService";
 
@@ -27,7 +27,7 @@ function App() {
 
     return (
       <div>
-        <button onClick={() => setShow("login")}>login</button>
+        <Link to="login">login</Link>
         <button onClick={() => setShow("register")}>register</button>
       </div>
     );
@@ -43,7 +43,6 @@ function App() {
     <>
       {header()}
       {authBtn()}
-      {show === "login" && <Login />}
       {show === "register" && <Register />}
     </>
   );
