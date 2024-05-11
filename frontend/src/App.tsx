@@ -1,12 +1,8 @@
 import { useMutation, useQuery } from "@tanstack/react-query";
-import { useState } from "react";
 import { Link } from "react-router-dom";
-import { Register } from "./components/Auth/Register";
 import { checkAuth, logout } from "./services/authService";
 
 function App() {
-  const [show, setShow] = useState("");
-
   const { data } = useQuery({ queryKey: ["auth"], queryFn: checkAuth });
 
   const mutation = useMutation({
@@ -28,7 +24,7 @@ function App() {
     return (
       <div>
         <Link to="login">login</Link>
-        <button onClick={() => setShow("register")}>register</button>
+        <Link to="register">register</Link>
       </div>
     );
   };
@@ -43,7 +39,6 @@ function App() {
     <>
       {header()}
       {authBtn()}
-      {show === "register" && <Register />}
     </>
   );
 }
