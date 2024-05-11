@@ -11,8 +11,8 @@ export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
   @Get()
-  async authCheck() {
-    return { isAuthenticated: true };
+  async authCheck(@Req() request: RequestWithUser) {
+    return { isAuthenticated: true, user: request.user };
   }
 
   @Public()
